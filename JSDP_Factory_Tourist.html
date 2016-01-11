@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BinaryTree</title>
+    <style>
+        div{
+            margin: 40px;
+        }
+    </style>
+</head>
+<body>
+<!-- <div> <button onclick="binaryTreeTest()">Create LinkList</button></div>-->
+  <div><a href="http://codereview.stackexchange.com/questions/31513/linkedlist-and-binary-search-tree-in-javascript">Question Link</a></div>
+   <script>
+       // 构建函数
+       function touristTrack(options){
+           this.origin = options.origin || "State College";
+           this.destination = options.destination || "New York";
+           this.days = options.days || 3;
+           this.cities = options.cities || {1:"State College", 2:"New York"};
+           this.basicPrice = options.basicPrice || 280;
+       }
+       function singleTrip(options){
+           this.startDate = options.startDate || "Mon Nov 12";
+           this.endDate = options.endDate || "Mon Nov 14";
+           this.driver = options.driver || {1:"Mike"};
+           this.passengers = options.passengers || {1:"Nike", 2:"Jane"};
+           this.passengerLimit = options.passengerLimit || 4;
+           this.carModel = options.carModel || "Honda civic";
+           this.price = options.price || 200;
+       }
+       
+       function TouristFactory(){}
+       TouristFactory.prototype.createTrip = function buildTourist(options){
+           var parentClass = null;
+           if(options.tripType == "Track"){
+               parentClass = touristTrack; // function
+           }else if(options.tripType == "Trip"){
+               parentClass = singleTrip;  // function
+           }else{
+               return false;
+           } 
+           
+           return new parentClass(options)
+       }
+       
+       // Usage
+       var myRoute = new TouristFactory();
+       var dcRoute = myRoute.createTrip({
+           tripType: 'Track',
+           destination : "D.C.",
+           cities: {1:"State College", 2:"New York", 3:"D.C."},
+           basicPrice: 360
+       });
+       console.log(dcRoute);
+       console.log(dcRoute instanceof touristTrack);
+       
+    </script>
+    
+</body>
+</html>

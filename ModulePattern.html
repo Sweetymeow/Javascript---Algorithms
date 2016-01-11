@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modules</title>
+    <style>
+        h4{
+            margin: 20px 10px;
+            font-weight: bold;
+            font-size: 1.6em;
+            color: palevioletred;
+        }        
+        h5{
+            margin: 10px 30px;
+            font-size: 1.2em;
+        }
+        p{
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+       <a href="http://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript">
+       The Module Pattern</a>
+    </div>
+    <div>
+       <h2>Modules: implementing modules</h2>
+        <ul>
+            <li>The Module pattern </li>
+            <li>Object literal notation 对象字面量</li>
+            <li>AMD modules</li>
+            <li>CommonJS modules</li>
+            <li>ECMAScript Harmony modules</li>
+        </ul>
+    </div>
+    <div>
+        <h4>Object Literals</h4>
+        <p>In object literal notation, an object is described as a set of comma-separated name/value pairs enclosed in curly braces ({}).</p>
+    </div>
+    <div>
+        <h4>The Module Pattern</h4>
+        <p>The Module pattern was originally defined as a way to provide both private and public encapsulation for classes in conventional software engineering.</p>
+        <h5>Privacy</h5>
+        <p>Variables can't technically be declared as being public nor private and so we use function scope to simulate this concept. Within the Module pattern, variables or methods declared are only available inside the module itself thanks to closure. Variables or methods defined within the returning object however are available to everyone.</p>
+        <p>闭包：声明的方法&变量只能用于module内部，但是在return {}中定义的对象可以用于任何人</p>
+        <p>只有模块才能享有拥有私有functions和members的自由。因为它们不会暴露于页面的其余部分（只会暴露于我们输出的API），我们认为它们是真正的private。 </p>
+        <p>容易发现错误： we're attempting to discover what function(s) threw an exception.</p>
+    </div>
+    <div>
+        <h4>Module Pattern Variations 模式变化</h4>
+        <h5>Import mixins 引入混入</h5>
+        <p>This variation of the pattern demonstrates how globals (e.g jQuery, Underscore) can be passed in as arguments to our module's anonymous function. </p>
+        <h5>Exports 导出</h5>
+        <p>声明全局变量而不用实现他们。This next variation allows us to declare globals without consuming them and could similarly support the concept of global imports seen in the last example.</p>
+        <h5>Toolkit And Framework-specific Module Pattern Implementations</h5>
+        <span>工具包和特定框架的module模式实现</span>
+        <h5>Dojo</h5>
+        <p>Dojo provides a convenience method for working with objects called <span style="color:pink; font-weight: bold;">dojo.setObject()</span>, see <a href="http://dojotoolkit.org/reference-guide/1.7/dojo/setObject.html">documentation</a></p>
+        <h5>jquery sample:</h5>
+    </div>
+    <script src="http://cdn.jsdelivr.net/jquery/3.0.0-alpha1/jquery.min.js"></script>
+    <script src="js/underscore.js"></script>
+   <script src="ModulePattern.js"></script>
+</body>
+</html>

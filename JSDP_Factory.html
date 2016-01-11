@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BinaryTree</title>
+    <style>
+        div{
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+ <div> <button onclick="binaryTreeTest()">Create Binary Tree</button></div>
+  <div><a href="http://codereview.stackexchange.com/questions/31513/linkedlist-and-binary-search-tree-in-javascript">Question Link</a></div>
+  <div>
+      <p><a href="http://stackoverflow.com/questions/8015630/definition-of-a-balanced-tree">Balanced and Unbalanced Tree</a></p>
+      <ol>
+          <li>The left and right subtrees' heights differ by at most one, AND</li>
+          <li>The left subtree is balanced, AND</li>
+          <li>The right subtree is balanced</li>
+      </ol>
+  </div>
+   <script>
+        var Node = function(value) {
+            this.value = value;
+            this.left = null;
+            this.right = null;
+            return this;
+        };
+
+        Node.prototype.insert = function(newNode) { 
+            if(newNode.value < this.value) { // 小于当前，查找左边
+                if(this.left === null) {
+                    this.left = newNode;
+                } else {
+                    this.left.insert(newNode); // 递归
+                }
+            } else if(newNode.value > this.value) { // 大于当前，查找右边
+                if(this.right === null) {
+                    this.right = newNode;
+                } else {
+                    this.right.insert(newNode);
+                }
+            } else {
+                return true; // 相等，返回true
+            }
+        };
+       
+//       Node.prototype.insert = function(val){
+//           var root = this.root; // 错误: this == Node 不存在root
+//           if(！root) root = new Node();
+//           var cur_root = root;
+//           var new_root = new Node(val);
+//           while(cur_root){
+//               if(val < cur_root){
+//                   if(cur_root.left != null){
+//                       cur_root = cur_root.left;
+//                   }else{
+//                       cur_root.left = new_root;
+//                   }
+//               }else{
+//                   if(cur_root.right != null){
+//                       cur_root = cur_root.right;
+//                   }else{
+//                       cur_root.right = new_root;
+//                   }
+//               }
+//           }
+//       }
+
+        Node.prototype.depthFirstSearch = function(searchValue) { // 迭代
+            console.log(searchValue+": " + this.value);
+
+            if(this.value === searchValue) {
+                console.log("search item found");
+                return true;
+            } else if(searchValue < this.value && this.left !== null) {
+                return this.left.depthFirstSearch(searchValue);
+            } else if(searchValue > this.value && this.right !== null) {
+                return this.right.depthFirstSearch(searchValue);
+            } else {
+                console.log("could not find "+searchValue);
+                return false;
+            }
+        };
+
+       /*  function dfs(node){ // Depth first search - 循环
+        *     if(node){
+        *       console.log(node.value);
+        *       dfs(node.left);
+        *       dfs(node.right);
+        *     }
+        *   }
+        */
+
+        // Hard code bad example
+        Node.prototype.inorderTraversal = function() {  
+            if(this.left !== null) {
+                this.left.inorderTraversal();
+            }
+            console.log(this.value);
+            if(this.right !== null) {
+                this.right.inorderTraversal();
+            }
+        };
+
+        // Constantly report error!!
+        Node.prototype.inorderTraversal_callback= function(visitor) {  
+            if (this.left !== null) {
+                this.left.inorderTraversal_callback(visitor);
+            }
+            visitor(this.value);
+            if(this.right !== null) {
+                this.right.inorderTraversal_callback(visitor);
+            }
+        };
+
+        Node.prototype.preOrderTraversal = function() { 
+            console.log(this.value);
+            if(this.left !== null) {
+                this.left.preOrderTraversal();
+            }   
+            if(this.right !== null) {
+                this.right.preOrderTraversal();
+            }
+        };
+
+        Node.prototype.postOrderTraversal = function() {        
+            if(this.left !== null) {
+                this.left.postOrderTraversal();
+            }   
+            if(this.right !== null) {
+                this.right.postOrderTraversal();
+            }
+            console.log(this.value);
+        };
+       
+       // min and max value
+       Node.prototype.minNode = function(){
+           if(this === null){
+               console.log("This node is NULL");
+               return 0;
+           }
+           if(this.left !== null){
+               return this.left.minNode();
+           }
+           return this.value;
+       }
+
+        // 定义 BinarySearchTree
+
+        var BinarySearchTree = function(insertNode) {
+            if(insertNode instanceof Node) {
+                this.root = insertNode;
+            } else {
+                this.root = new Node(insertNode);
+            }
+            return this;
+        };
+
+        BinarySearchTree.prototype.insert = function(insert) {  
+            if(insert instanceof Node) {
+                this.root.insert(insert);
+            } else {
+                this.root.insert(new Node(insert));
+            }
+        };
+
+        BinarySearchTree.prototype.depthFirstSearch = function(searchValue) {
+            this.root.depthFirstSearch(searchValue); 
+            // 调用Node(父类的)depthFirstSearch()方法
+        };
+
+        BinarySearchTree.prototype.breadthFirstTraversal = function() {
+            console.log("Breadth First Traversal");
+
+            // For our intensive purposes,
+            // our array is acting as a queue for us.
+            var queue = [],
+                current = this.root;
+
+            if(current !== null) {
+                queue.push(current);
+            }
+
+            // start off enqueing root
+            while(queue.length > 0) {
+                var tempNode = queue.shift();
+                console.log(tempNode.value); // Visit current node
+                if(tempNode.left !== null) {
+                    queue.push(tempNode.left);
+                }
+                if(tempNode.right !== null) {
+                    queue.push(tempNode.right);
+                }       
+            }   
+        };
+
+        BinarySearchTree.prototype.inOrderTraversal = function(){
+            this.root.inorderTraversal();
+            //this.root.inorderTraversal(console.log);
+        };
+        BinarySearchTree.prototype.inOrderTraversal_callback= function(){
+            this.root.inorderTraversal_callback(console.log.bind(console));
+            //this.root.inorderTraversal(console.log);
+        };
+        BinarySearchTree.prototype.preOrderTraversal = function(){
+            this.root.preOrderTraversal();
+        };
+        BinarySearchTree.prototype.postOrderTraversal = function(){
+            this.root.postOrderTraversal();
+        };
+
+
+        // Gotta not hurt dat global namespace
+        function binaryTreeTest(){
+
+            // Example BinBinarySearchTree
+            var bst = new BinarySearchTree(50);
+            bst.insert(25);
+            bst.insert(75);
+            bst.insert(12);
+            bst.insert(37);
+            bst.insert(87);
+            bst.insert(63);
+            console.log(bst);
+
+            console.log("Inorder Traversal");
+            bst.inOrderTraversal();
+            console.log("Inorder Traversal_callback:");
+            bst.inOrderTraversal_callback();
+
+            console.log("Preorder Traversal");
+            bst.preOrderTraversal();
+
+            console.log("Postorder Traversal");
+            bst.postOrderTraversal();
+
+            console.log("Search for valid (63)");
+            bst.depthFirstSearch(63);
+
+            console.log("Search for invalid (19)");
+            bst.depthFirstSearch(19);   
+
+            bst.breadthFirstTraversal();
+        };
+       
+//       (function(){
+//
+//            // Example BinBinarySearchTree
+//            var bst = new BinarySearchTree(50);
+//            bst.insert(25);
+//            bst.insert(75);
+//            bst.insert(12);
+//            bst.insert(37);
+//            bst.insert(87);
+//            bst.insert(63);
+//
+//            console.log("Inorder Traversal");
+//            bst.inOrderTraversal();
+//
+//            console.log("Preorder Traversal");
+//            bst.preOrderTraversal();
+//
+//            console.log("Postorder Traversal");
+//            bst.postOrderTraversal();
+//
+//            console.log("Search for valid (63)");
+//            bst.depthFirstSearch(63);
+//
+//            console.log("Search for invalid (19)");
+//            bst.depthFirstSearch(19);   
+//
+//            bst.breadthFirstTraversal();
+//        })();
+    </script>
+    
+</body>
+</html>
